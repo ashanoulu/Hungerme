@@ -1,0 +1,167 @@
+---
+openapi: 3.0.3
+servers:
+- url: /api
+tags:
+  - name: "Menus"
+    description: "Menu API"
+components:
+  parameters:
+    menu_id:
+      description: menu id
+      in: path
+      name: menu_id
+      required: true
+      schema:
+        type: string
+  schemas:
+    Menu:
+      properties:
+        name:
+          description: Name of the menu
+          type: string
+        description:
+          description: Menu description
+          type: string
+        restaurant_id:
+          description: Related restaurant id
+          type: string
+        price:
+          description: Menu price
+          type: number
+        status:
+          description: Menu status
+          type: boolean
+        menu_id:
+          description: Menu id
+          type: string
+      required:
+      - name
+      - description
+      - restaurant_id
+      - price
+      type: object
+  securitySchemes:
+    UserKey:
+      type: apiKey
+      name: x-access-token
+      in: header
+info:
+  title: HungerMe Example
+  version: 1.0.0
+  description: |
+    This is an API example used in the Programmable Web Project course.
+    It stores restaurant management system data.
+  termsOfService: http://totally.not.placehold.er/
+  contact:
+    url: http://totally.not.placehold.er/
+    email: pwp-course@lists.oulu.fi
+    name: PWP Staff List
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /menu/list/{restaurant_id}:
+    get:
+      tags:
+        - Menus
+      description: Get the list of menus by restaurant
+      responses:
+        '200':
+          description: List of menus
+          content:
+            application/json:
+              example:
+              - id: 319c42f7-3035-4ad9-8b86-9de37ae62a4d
+                name: Pizza
+                description: Large Kaana Pizza
+                restaurant_id: 3a9e5c1a-acdb-450c-a85d-dfcaface1976
+                price: 12.30
+                status: 1
+  /menu/get/{menu_id}:
+    get:
+      tags:
+        - Menus
+      description: Get a menu by menu id
+      responses:
+        '200':
+          description: JSON document that contains basic data for a new menu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+              example:
+                - id: 319c42f7-3035-4ad9-8b86-9de37ae62a4d
+                  name: Pizza
+                  description: Large Kaana Pizza
+                  price: 12.30
+                  restaurant_name: Oulu Restaurant
+                  restaurant_address: Rajakyla
+                  restaurant_contact_no: +358996633215
+        '400':
+          description: The request body was not valid
+        '415':
+          description: Wrong media type was used
+  /menu/new:
+    post:
+      tags:
+        - Menus
+      description: Create a new menu
+      requestBody:
+        description: JSON document that contains basic data for a new menu
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Menu'
+            example:
+              - id: 319c42f7-3035-4ad9-8b86-9de37ae62a4d
+                name: Pizza
+                description: Large Kaana Pizza
+                restaurant_id: 3a9e5c1a-acdb-450c-a85d-dfcaface1976
+                price: 12.30
+                status: 1
+      responses:
+        '200':
+          description: The Menu was created successfully
+        '400':
+          description: The request body was not valid
+        '415':
+          description: Wrong media type was used
+  /menu/update/{menu_id}:
+    put:
+      tags:
+        - Menus
+      description: Create a new menu
+      requestBody:
+        description: JSON document that contains basic data for a new menu
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Menu'
+            example:
+              - id: 319c42f7-3035-4ad9-8b86-9de37ae62a4d
+                name: Pizza
+                description: Large Kaana Pizza
+                price: 12.30
+                status: 1
+      responses:
+        '200':
+          description: The Menu was created successfully
+        '400':
+          description: The request body was not valid
+        '415':
+          description: Wrong media type was used
+  /menu/delete/{menu_id}:
+    delete:
+      tags:
+        - Menus
+      description: Create a new menu
+      requestBody:
+        description: JSON document that contains basic data for a new menu
+      responses:
+        '200':
+          description: The Menu was created successfully
+        '400':
+          description: The request body was not valid
+        '415':
+          description: Wrong media type was used
